@@ -8,7 +8,8 @@ class Genre extends Model
 {
     public static function getGenres(): array
     {
-        return [
+        return[
+            
             ['id' => 1, 'name' => 'Fiksi'],
             ['id' => 2, 'name' => 'Romantis'],
             ['id' => 3, 'name' => 'Misteri'],
