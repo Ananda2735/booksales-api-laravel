@@ -2,39 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
+use App\Models\Author;
+use Illuminate\Http\Request;
 
 class AuthorController extends Controller
 {
-    public function index(): JsonResponse
+    public function index()
     {
-        $authors = [
-            [
-                'id' => 1,
-                'name' => 'Andi'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Budi'
-            ],
-            [
-                'id' => 3,
-                'name' => 'Citra'
-            ],
-            [
-                'id' => 4,
-                'name' => 'Dina'
-            ],
-            [
-                'id' => 5,
-                'name' => 'Eko'
-            ]
-        ];
+        $authors = Author::all();
 
         return response()->json([
             'success' => true,
-            'message' => 'Data penulis berhasil ditampilkan',
-            'data' => $authors
+            'message' => 'Data author berhasil ditampilkan',
+            'data'    => $authors
         ], 200);
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255'
+        ]);
+
+        $author = Author::create($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Author berhasil ditambahkan',
+            'data'    => $author
+        ], 201);
     }
 }
