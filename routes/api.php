@@ -4,15 +4,17 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\TransaksiController;
 
-// Read All dan Show: bisa diakses semua orang
+// Genre: Read All dan Show bisa diakses semua orang
 Route::get('/genres', [GenreController::class, 'index']);
 Route::get('/genres/{genre}', [GenreController::class, 'show']);
 
+// Author: Read All dan Show bisa diakses semua orang
 Route::get('/authors', [AuthorController::class, 'index']);
 Route::get('/authors/{author}', [AuthorController::class, 'show']);
 
-// Create, Update, dan Destroy: khusus admin
+// Genre dan Author: khusus admin
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('/genres', [GenreController::class, 'store']);
     Route::put('/genres/{genre}', [GenreController::class, 'update']);
@@ -23,4 +25,18 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::put('/authors/{author}', [AuthorController::class, 'update']);
     Route::patch('/authors/{author}', [AuthorController::class, 'update']);
     Route::delete('/authors/{author}', [AuthorController::class, 'destroy']);
+});
+
+// Transaksi: Customer yang sudah login
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/transaksis', [TransaksiController::class, 'store']);
+    Route::get('/transaksis/{transaksi}', [TransaksiController::class, 'show']);
+    Route::put('/transaksis/{transaksi}', [TransaksiController::class, 'update']);
+    Route::patch('/transaksis/{transaksi}', [TransaksiController::class, 'update']);
+});
+
+// Transaksi: khusus admin
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::get('/transaksis', [TransaksiController::class, 'index']);
+    Route::delete('/transaksis/{transaksi}', [TransaksiController::class, 'destroy']);
 });
